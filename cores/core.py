@@ -188,4 +188,4 @@ def cleanmosaic_video_fusion(opt,netG,netM):
     ffmpeg.image2video( fps,
                 './tmp/replace_mosaic/output_%05d.'+opt.tempimage_type,
                 './tmp/voice_tmp.mp3',
-                 os.path.join(opt.result_dir,os.path.splitext(os.path.basename(path))[0]+'_clean.mp4'))        
+                 os.path.join(opt.result_dir,os.path.splitext(os.path.basename(path))[0]+'_clean.mp4'))
