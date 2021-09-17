@@ -4,7 +4,7 @@ import traceback
 from cores import Options, core
 from util import util
 from models import loadmodel
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 import time
 
 opt = Options().getparse()
