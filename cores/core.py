@@ -93,7 +93,8 @@ def styletransfer_video(opt,netG):
 def get_mosaic_positions(opt,netM,imagepaths,savemask=True):
     # get mosaic position
     positions = []
-    for i,imagepath in tqdm(enumerate(imagepaths,1)):
+    print("get_mos_pos")
+    for i,imagepath in enumerate(tqdm(imagepaths,1)):
         img_origin = impro.imread(os.path.join('./tmp/video2image',imagepath))
         x,y,size,mask = runmodel.get_mosaic_position(img_origin,netM,opt)
         if savemask:
