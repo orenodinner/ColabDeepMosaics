@@ -4,7 +4,7 @@ import cv2
 import cupy as cp
 
 from tqdm import tqdm
-
+from numba import jit
 
 from models import runmodel, loadmodel
 from util import mosaic, util, ffmpeg, filt, data
@@ -116,6 +116,7 @@ def styletransfer_video(opt, netG):
 '''
 
 
+@jit(nopython=True)
 def get_mosaic_positions(opt, netM, imagepaths, savemask=True):
     # get mosaic position
     positions = []
@@ -128,6 +129,7 @@ def get_mosaic_positions(opt, netM, imagepaths, savemask=True):
         positions.append([x, y, size])
        # print('\r', 'Find mosaic location:'+str(i)+'/'+str(len(imagepaths)))
     print('\nOptimize mosaic locations...')
+
     positions = np.array(positions)
     for i in range(3):
         print("count:" + str(i))
@@ -135,6 +137,7 @@ def get_mosaic_positions(opt, netM, imagepaths, savemask=True):
     return positions
 
 
+@jit(nopython=True)
 def cleanmosaic_img(opt, netG, netM):
 
     path = opt.media_path
@@ -157,6 +160,7 @@ def cleanmosaic_img(opt, netG, netM):
         os.path.basename(path))[0]+'_clean.jpg'), img_result)
 
 
+@jit(nopython=True)
 def cleanmosaic_video_byframe(opt, netG, netM):
     path = opt.media_path
     fps, imagepaths = video_init(opt, path)[:2]
@@ -184,6 +188,7 @@ def cleanmosaic_video_byframe(opt, netG, netM):
                        os.path.join(opt.result_dir, os.path.splitext(os.path.basename(path))[0]+'_clean.mp4'))
 
 
+@jit(nopython=True)
 def cleanmosaic_video_fusion(opt, netG, netM):
     path = opt.media_path
     N = 25
