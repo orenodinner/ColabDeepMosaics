@@ -124,7 +124,7 @@ def get_mosaic_positions(opt, netM, imagepaths, savemask=True):
     print('\nOptimize mosaic locations...')
     positions = np.array(positions)
     for i in range(3):
-        print("count:"+i)
+        print("count:" + str(i))
         positions[:, i] = filt.medfilt(positions[:, i], opt.medfilt_num)
     return positions
 
