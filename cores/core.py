@@ -2,7 +2,7 @@ import os
 import numpy as np
 import cv2
 
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 
 
 from models import runmodel, loadmodel
