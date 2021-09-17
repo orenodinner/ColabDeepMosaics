@@ -96,7 +96,7 @@ def get_mosaic_positions(opt,netM,imagepaths,savemask=True):
         if savemask:
             cv2.imwrite(os.path.join('./tmp/mosaic_mask',imagepath), mask)
         positions.append([x,y,size])
-        print('\r','Find mosaic location:'+str(i)+'/'+str(len(imagepaths)))
+        print('\r','Find mosaic location:'+str(i)+'/'+str(len(imagepaths)),end="")
     print('\nOptimize mosaic locations...')
     positions =np.array(positions)
     for i in range(3):positions[:,i] = filt.medfilt(positions[:,i],opt.medfilt_num)
@@ -139,7 +139,7 @@ def cleanmosaic_video_byframe(opt,netG,netM):
         mask = cv2.imread(os.path.join('./tmp/mosaic_mask',imagepath),0)
         img_result = impro.replace_mosaic(img_origin,img_fake,mask,x,y,size,opt.no_feather)
         cv2.imwrite(os.path.join('./tmp/replace_mosaic',imagepath),img_result)
-        print('\r','Clean Mosaic:'+str(i+1)+'/'+str(len(imagepaths)))
+        print('\r','Clean Mosaic:'+str(i+1)+'/'+str(len(imagepaths)),end="")
     ffmpeg.image2video( fps,
                 './tmp/replace_mosaic/output_%05d.'+opt.tempimage_type,
                 './tmp/voice_tmp.mp3',
