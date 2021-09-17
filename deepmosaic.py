@@ -4,12 +4,16 @@ import traceback
 from cores import Options,core
 from util import util
 from models import loadmodel
+from tqdm.notebook import tqdm
 
 opt = Options().getparse()
 util.file_init(opt)
 
 def main():
-    
+    #test
+    for i in tqdm(range(100)):
+        time.sleep(1)
+        #
     if os.path.isdir(opt.media_path):
         files = util.Traversal(opt.media_path)
     else:
