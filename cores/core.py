@@ -184,7 +184,7 @@ def cleanmosaic_video_fusion(opt,netG,netM):
             img_fake = data.tensor2im(unmosaic_pred,rgb2bgr = False ,is0_1 = False)
             img_result = impro.replace_mosaic(img_origin,img_fake,mask,x,y,size,opt.no_feather)
             cv2.imwrite(os.path.join('./tmp/replace_mosaic',imagepath),img_result)
-        print('\r','Clean Mosaic:'+str(i+1)+'/'+str(len(imagepaths)))
+        print('\r','Clean Mosaic:'+str(i+1)+'/'+str(len(imagepaths)),end="")
     ffmpeg.image2video( fps,
                 './tmp/replace_mosaic/output_%05d.'+opt.tempimage_type,
                 './tmp/voice_tmp.mp3',
