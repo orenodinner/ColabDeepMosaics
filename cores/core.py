@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import cv2
+import cupy as cp
 
 from tqdm import tqdm
 
@@ -8,6 +9,11 @@ from tqdm import tqdm
 from models import runmodel, loadmodel
 from util import mosaic, util, ffmpeg, filt, data
 from util import image_processing as impro
+
+
+# Declare at first
+pool = cp.cuda.MemoryPool(cp.cuda.malloc_managed)
+cp.cuda.set_allocator(pool.malloc)
 
 '''
 ---------------------Video Init---------------------
