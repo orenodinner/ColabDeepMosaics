@@ -12,10 +12,6 @@ util.file_init(opt)
 
 
 def main():
-    # test
-    for i in tqdm(range(100)):
-        time.sleep(1)
-        #
     if os.path.isdir(opt.media_path):
         files = util.Traversal(opt.media_path)
     else:

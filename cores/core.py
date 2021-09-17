@@ -114,13 +114,13 @@ def get_mosaic_positions(opt, netM, imagepaths, savemask=True):
     # get mosaic position
     positions = []
     print("get_mos_pos")
-    for i, imagepath in enumerate(imagepaths, 1):
+    for i, imagepath in enumerate(tqdm(imagepaths), 1):
         img_origin = impro.imread(os.path.join('./tmp/video2image', imagepath))
         x, y, size, mask = runmodel.get_mosaic_position(img_origin, netM, opt)
         if savemask:
             cv2.imwrite(os.path.join('./tmp/mosaic_mask', imagepath), mask)
         positions.append([x, y, size])
-        print('\r', 'Find mosaic location:'+str(i)+'/'+str(len(imagepaths)))
+       # print('\r', 'Find mosaic location:'+str(i)+'/'+str(len(imagepaths)))
     print('\nOptimize mosaic locations...')
     positions = np.array(positions)
     for i in range(3):
@@ -156,7 +156,7 @@ def cleanmosaic_video_byframe(opt, netG, netM):
     fps, imagepaths = video_init(opt, path)[:2]
     positions = get_mosaic_positions(opt, netM, imagepaths, savemask=True)
     # clean mosaic
-    for i, imagepath in enumerate(imagepaths, 0):
+    for i, imagepath in enumerate(tqdm(imagepaths), 0):
         x, y, size = positions[i][0], positions[i][1], positions[i][2]
         img_origin = impro.imread(os.path.join('./tmp/video2image', imagepath))
         img_result = img_origin.copy()
@@ -171,7 +171,7 @@ def cleanmosaic_video_byframe(opt, netG, netM):
             img_origin, img_fake, mask, x, y, size, opt.no_feather)
         cv2.imwrite(os.path.join(
             './tmp/replace_mosaic', imagepath), img_result)
-        print('\r', 'Clean Mosaic:'+str(i+1)+'/'+str(len(imagepaths)))
+        #print('\r', 'Clean Mosaic:'+str(i+1)+'/'+str(len(imagepaths)))
     ffmpeg.image2video(fps,
                        './tmp/replace_mosaic/output_%05d.'+opt.tempimage_type,
                        './tmp/voice_tmp.mp3',
@@ -190,7 +190,7 @@ def cleanmosaic_video_fusion(opt, netG, netM):
 
     # clean mosaic
     img_pool = np.zeros((height, width, 3*N), dtype='uint8')
-    for i, imagepath in enumerate(imagepaths, 0):
+    for i, imagepath in enumerate(tqdm(imagepaths), 0):
         x, y, size = positions[i][0], positions[i][1], positions[i][2]
 
         # image read stream
@@ -227,7 +227,7 @@ def cleanmosaic_video_fusion(opt, netG, netM):
                 img_origin, img_fake, mask, x, y, size, opt.no_feather)
             cv2.imwrite(os.path.join(
                 './tmp/replace_mosaic', imagepath), img_result)
-        print('\r', 'Clean Mosaic:'+str(i+1)+'/'+str(len(imagepaths)))
+        #print('\r', 'Clean Mosaic:'+str(i+1)+'/'+str(len(imagepaths)))
     ffmpeg.image2video(fps,
                        './tmp/replace_mosaic/output_%05d.'+opt.tempimage_type,
                        './tmp/voice_tmp.mp3',
