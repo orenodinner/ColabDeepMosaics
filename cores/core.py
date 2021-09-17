@@ -2,6 +2,9 @@ import os
 import numpy as np
 import cv2
 
+from tqdm.notebook import tqdm
+
+
 from models import runmodel,loadmodel
 from util import mosaic,util,ffmpeg,filt,data
 from util import image_processing as impro
@@ -90,16 +93,16 @@ def styletransfer_video(opt,netG):
 def get_mosaic_positions(opt,netM,imagepaths,savemask=True):
     # get mosaic position
     positions = []
-    for i,imagepath in enumerate(imagepaths,1):
+    for i,imagepath in tqdm(enumerate(imagepaths,1)):
         img_origin = impro.imread(os.path.join('./tmp/video2image',imagepath))
         x,y,size,mask = runmodel.get_mosaic_position(img_origin,netM,opt)
         if savemask:
             cv2.imwrite(os.path.join('./tmp/mosaic_mask',imagepath), mask)
         positions.append([x,y,size])
-        print('\r','Find mosaic location:'+str(i)+'/'+str(len(imagepaths)),end="")
+        #print('\r','Find mosaic location:'+str(i)+'/'+str(len(imagepaths)),end="")
     print('\nOptimize mosaic locations...')
     positions =np.array(positions)
-    for i in range(3):positions[:,i] = filt.medfilt(positions[:,i],opt.medfilt_num)
+    for i in tqdm(range(3):positions[:,i] = filt.medfilt(positions[:,i],opt.medfilt_num))
     return positions
 
 def cleanmosaic_img(opt,netG,netM):
