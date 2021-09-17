@@ -43,6 +43,7 @@ def position_medfilt(positions,window):
     y_filt = medfilt(y, window)
     area_filt = medfilt(area, window)
     cnt = 0
+    print('個数：'+len(x))
     for i in range(1,len(x)):
         if 0.8<x_filt[i]/(x[i]+1)<1.2 and 0.8<y_filt[i]/(y[i]+1)<1.2 and 0.6<area_filt[i]/(area[i]+1)<1.4:
             mask_index[i] = mask_index[i]
