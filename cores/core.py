@@ -102,7 +102,7 @@ def get_mosaic_positions(opt,netM,imagepaths,savemask=True):
         #print('\r','Find mosaic location:'+str(i)+'/'+str(len(imagepaths)),end="")
     print('\nOptimize mosaic locations...')
     positions =np.array(positions)
-    for i in tqdm(range(3):positions[:,i] = filt.medfilt(positions[:,i],opt.medfilt_num))
+    for i in tqdm(range(3)):positions[:,i] = filt.medfilt(positions[:,i],opt.medfilt_num)
     return positions
 
 def cleanmosaic_img(opt,netG,netM):
