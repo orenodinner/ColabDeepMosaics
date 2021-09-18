@@ -15,7 +15,7 @@ from util import image_processing as impro
 '''
 
 
-@jit
+# @jit
 def video_init(opt, path):
     util.clean_tempfiles()
     fps, endtime, height, width = ffmpeg.get_video_infos(path)
@@ -112,7 +112,7 @@ def styletransfer_video(opt, netG):
 '''
 
 
-@jit
+# @jit
 def get_mosaic_positions(opt, netM, imagepaths, savemask=True):
     # get mosaic position
     positions = []
@@ -132,7 +132,7 @@ def get_mosaic_positions(opt, netM, imagepaths, savemask=True):
     return positions
 
 
-@jit
+# @jit
 def cleanmosaic_img(opt, netG, netM):
 
     path = opt.media_path
@@ -155,7 +155,7 @@ def cleanmosaic_img(opt, netG, netM):
         os.path.basename(path))[0]+'_clean.jpg'), img_result)
 
 
-@jit
+# @jit
 def cleanmosaic_video_byframe(opt, netG, netM):
     path = opt.media_path
     fps, imagepaths = video_init(opt, path)[:2]
@@ -183,7 +183,7 @@ def cleanmosaic_video_byframe(opt, netG, netM):
                        os.path.join(opt.result_dir, os.path.splitext(os.path.basename(path))[0]+'_clean.mp4'))
 
 
-@jit
+# @jit
 def cleanmosaic_video_fusion(opt, netG, netM):
     path = opt.media_path
     N = 25
