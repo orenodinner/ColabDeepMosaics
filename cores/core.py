@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import cv2
+from numba import jit
 
 from tqdm import tqdm
 
@@ -14,6 +15,7 @@ from util import image_processing as impro
 '''
 
 
+@jit
 def video_init(opt, path):
     util.clean_tempfiles()
     fps, endtime, height, width = ffmpeg.get_video_infos(path)
@@ -110,6 +112,7 @@ def styletransfer_video(opt, netG):
 '''
 
 
+@jit
 def get_mosaic_positions(opt, netM, imagepaths, savemask=True):
     # get mosaic position
     positions = []
@@ -129,6 +132,7 @@ def get_mosaic_positions(opt, netM, imagepaths, savemask=True):
     return positions
 
 
+@jit
 def cleanmosaic_img(opt, netG, netM):
 
     path = opt.media_path
@@ -151,6 +155,7 @@ def cleanmosaic_img(opt, netG, netM):
         os.path.basename(path))[0]+'_clean.jpg'), img_result)
 
 
+@jit
 def cleanmosaic_video_byframe(opt, netG, netM):
     path = opt.media_path
     fps, imagepaths = video_init(opt, path)[:2]
@@ -178,6 +183,7 @@ def cleanmosaic_video_byframe(opt, netG, netM):
                        os.path.join(opt.result_dir, os.path.splitext(os.path.basename(path))[0]+'_clean.mp4'))
 
 
+@jit
 def cleanmosaic_video_fusion(opt, netG, netM):
     path = opt.media_path
     N = 25
