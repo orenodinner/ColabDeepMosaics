@@ -27,37 +27,37 @@ def video2voice(videopath, voicepath):
 
 def image2video(fps, imagepath, voicepath, videopath):
     # os.system('ffmpeg -y -r '+str(fps)+' -i '+imagepath +
-              ' -vcodec hevc_nvenc '+'./tmp/video_tmp.mp4')
-    os.system('ffmpeg -f image2 -i '+imagepath + \
+    #          ' -vcodec hevc_nvenc '+'./tmp/video_tmp.mp4')
+    os.system('ffmpeg -f image2 -i '+imagepath +
               ' -vcodec libx264 -r '+str(fps)+' ./tmp/video_tmp.mp4')
     os.system('ffmpeg -i ./tmp/video_tmp.mp4 -i "'+voicepath +
               '" -vcodec copy -acodec copy '+videopath)
 
 
 def get_video_infos(videopath):
-    cmd_str='ffprobe -v quiet -print_format json -show_format -show_streams -i "' + videopath + '"'
+    cmd_str = 'ffprobe -v quiet -print_format json -show_format -show_streams -i "' + videopath + '"'
     # out_string = os.popen(cmd_str).read()
     # For chinese path in Windows
     # https://blog.csdn.net/weixin_43903378/article/details/91979025
-    stream=os.popen(cmd_str)._stream
-    out_string=stream.buffer.read().decode(encoding = 'utf-8')
+    stream = os.popen(cmd_str)._stream
+    out_string = stream.buffer.read().decode(encoding='utf-8')
 
-    infos=json.loads(out_string)
+    infos = json.loads(out_string)
     try:
-        fps=eval(infos['streams'][0]['avg_frame_rate'])
-        endtime=float(infos['format']['duration'])
-        width=int(infos['streams'][0]['width'])
-        height=int(infos['streams'][0]['height'])
+        fps = eval(infos['streams'][0]['avg_frame_rate'])
+        endtime = float(infos['format']['duration'])
+        width = int(infos['streams'][0]['width'])
+        height = int(infos['streams'][0]['height'])
     except Exception as e:
-        fps=eval(infos['streams'][1]['r_frame_rate'])
-        endtime=float(infos['format']['duration'])
-        width=int(infos['streams'][1]['width'])
-        height=int(infos['streams'][1]['height'])
+        fps = eval(infos['streams'][1]['r_frame_rate'])
+        endtime = float(infos['format']['duration'])
+        width = int(infos['streams'][1]['width'])
+        height = int(infos['streams'][1]['height'])
 
     return fps, endtime, height, width
 
 
-def cut_video(in_path, start_time, last_time, out_path, vcodec = 'h265'):
+def cut_video(in_path, start_time, last_time, out_path, vcodec='h265'):
     if vcodec == 'copy':
         os.system('ffmpeg -ss '+start_time+' -t '+last_time+' -i "' +
                   in_path+'" -vcodec copy -acodec copy '+out_path)
@@ -75,6 +75,6 @@ def continuous_screenshot(videopath, savedir, fps):
     savedir:   images will save here
     fps:       save how many images per second
     '''
-    videoname=os.path.splitext(os.path.basename(videopath))[0]
+    videoname = os.path.splitext(os.path.basename(videopath))[0]
     os.system('ffmpeg -i "'+videopath+'" -vf fps='+str(fps) +
               ' -q:v -0 '+savedir+'/'+videoname+'_%06d.jpg')
